@@ -1,12 +1,16 @@
 package com.world.user_service.auth;
 
+import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.world.user_service.role.Role;
 import com.world.user_service.role.RoleRepository;
+import com.world.user_service.security.JwtService;
 import com.world.user_service.user.User;
 import com.world.user_service.user.UserRepository;
 
@@ -21,6 +25,9 @@ public class AuthService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
+
 
     public void register(RegistrationRequest request){
         
@@ -34,8 +41,23 @@ public class AuthService {
             .email(request.email())
             .password(passwordEncoder.encode(request.password()))
             .roles(List.of(role))
+            .enabled(true)
             .build();
         userRepository.save(user);
+    }
+
+    public AuthenticationResponse authenticate(AuthenticationRequest request){
+        var auth = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(
+                    request.getEmail(),
+                    request.getPassword()
+            )
+        );
+        var claims = new HashMap<String, Object>();
+        var user = (User) auth.getPrincipal();
+        claims.put("fullName", user.getFullName());
+        var jwt = jwtService.generateToken(claims, user);
+        return AuthenticationResponse.builder().token(jwt).build();
     }
 
 }
