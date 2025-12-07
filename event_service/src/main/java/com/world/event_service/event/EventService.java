@@ -1,7 +1,10 @@
 package com.world.event_service.event;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,6 +13,7 @@ import com.world.event_service.event.DTOs.EventRequest;
 import com.world.event_service.event.DTOs.EventResponse;
 import com.world.event_service.event_file.EventFile;
 import com.world.event_service.event_file.FileStorageService;
+import com.world.event_service.pagination.PageResponse;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +52,19 @@ public class EventService {
         
         event = eventRepository.save(event);
         return eventMapper.toEventResponse(event);
+    }
+
+    public PageResponse<EventResponse> getUpcomingEvents(Pageable pageable) {
+        Page<EventResponse> events = eventRepository.findByTimeAfter(LocalDateTime.now(), pageable).map(eventMapper::toEventResponse);
+        return new PageResponse<>(
+            events.getContent(),
+            events.getNumber(),
+            events.getSize(),
+            events.getTotalElements(),
+            events.getTotalPages(),
+            events.isFirst(),
+            events.isLast()
+        );
     }
 
 }
