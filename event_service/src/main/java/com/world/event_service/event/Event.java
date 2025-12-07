@@ -51,6 +51,6 @@ public class Event {
 
         files.add(eventFile);
 
-        //eventFile.setEvent(this);
+        eventFile.setEvent(this);
     }
 }
