@@ -37,4 +37,16 @@ public class AdminService {
         userRepository.save(user);
     }
 
+    public List<UserResponse> getUsers(List<Integer> userIDs) {
+        return userRepository.findAllById(userIDs).stream()
+        .map( user -> UserResponse.builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .dateOfBirth(user.getDateOfBirth())
+                .email(user.getEmail())
+                .build()
+        ).toList();
+    }
+
 }

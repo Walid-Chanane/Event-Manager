@@ -24,8 +24,8 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(configurer ->
                     configurer
-                        .requestMatchers("/events/upcoming").authenticated()
-                        .requestMatchers("/events/**").hasAnyRole("ADMIN", "EMPLOYEE")
+                        .requestMatchers("/events/**").authenticated()
+                        .requestMatchers("/admin/**").hasAnyRole("ADMIN", "EMPLOYEE")
                                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) 
