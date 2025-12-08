@@ -23,6 +23,9 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
+server:
+  port: 8081
+
 application:
   file:
     upload:
