@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.world.event_service.event.DTOs.AdminEventResponse;
 import com.world.event_service.event.DTOs.EventMapper;
 import com.world.event_service.event.DTOs.EventRequest;
 import com.world.event_service.event.DTOs.EventResponse;
@@ -112,6 +113,19 @@ public class EventService {
             .userIDs(List.of(userId))
             .build();
         notificationService.sendNotification(request, authHeader);
+    }
+
+    public PageResponse<AdminEventResponse> getEvents(Pageable pageable) {
+        Page<AdminEventResponse> events = eventRepository.findAll(pageable).map(eventMapper::toAdminEventResponse);
+        return new PageResponse<>(
+            events.getContent(),
+            events.getNumber(),
+            events.getSize(),
+            events.getTotalElements(),
+            events.getTotalPages(),
+            events.isFirst(),
+            events.isLast()
+        );
     }
 
 }

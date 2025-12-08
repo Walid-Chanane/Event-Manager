@@ -1,5 +1,7 @@
 package com.world.user_service.admin;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,5 +24,10 @@ public class AdminController {
     public ResponseEntity<?> addEmployee(@RequestBody @Valid RegistrationRequest request){
         adminService.addEmployee(request);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("users/by-id")
+    public ResponseEntity<List<UserResponse>> getUsers(@RequestBody List<Integer> userIDs){
+        return ResponseEntity.ok(adminService.getUsers(userIDs));
     }
 }

@@ -42,4 +42,20 @@ public class EventMapper {
             .build();
     }
 
+    public AdminEventResponse toAdminEventResponse(Event event){
+        List<EventFileResponse> eventFiles = new ArrayList<EventFileResponse>();
+        if (event.getFiles() != null) eventFiles = event.getFiles().stream().map(eventFileMapper::toResponse).toList();
+        
+        return AdminEventResponse.builder()
+            .id(event.getId())
+            .title(event.getTitle())
+            .description(event.getDescription())
+            .time(event.getTime())
+            .location(event.getLocation())
+            .status(event.getStatus())
+            .files(eventFiles)
+            .participantIDs(event.getParticipantIDs())
+            .build();
+    }
+
 }
