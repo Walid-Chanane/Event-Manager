@@ -2,6 +2,7 @@ package com.world.notification_service;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,20 @@ public class NotificationService {
             ).toList();
 
         notificationRepository.saveAll(notifications);
+    }
+
+    public List<NotificationResponse> getUserNotifications(Authentication authenticatedUser) {
+        Integer userId = (Integer) authenticatedUser.getPrincipal();
+        List<Notification> notifications = notificationRepository.findByUserId(userId);
+        return notifications.stream()
+            .map(notification -> NotificationResponse.builder()
+                .id(notification.getId())
+                .title(notification.getTitle())
+                .message(notification.getMessage())
+                .type(notification.getType())
+                .createdDate(notification.getCreatedDate())
+                .build()
+            ).toList();
     }
     
 }
