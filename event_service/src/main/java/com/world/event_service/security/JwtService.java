@@ -45,12 +45,15 @@ public class JwtService {
     
     public List<GrantedAuthority> extractAuthorities(String token){
         Claims claims = extractAllClaims(token);
-        Object authorities = claims.get("authorities");
         @SuppressWarnings("unchecked")
-        List<String> roles = (List<String>) authorities;
+        List<String> roles = claims.get("authorities", List.class);
         return roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+                    .map(SimpleGrantedAuthority::new)
+                    .collect(Collectors.toList());    
+    }
+
+    public Integer extractUserId(String token) {
+    return extractClaims(token, claims -> claims.get("userId", Integer.class));
     }
     
     private Key getSignInKey() {

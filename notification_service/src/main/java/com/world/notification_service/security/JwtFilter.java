@@ -28,18 +28,17 @@ public class JwtFilter extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, java.io.IOException {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        final String jwt;
-        final String userEmail;
         if(authHeader == null || !authHeader.startsWith("Bearer ")){
             filterChain.doFilter(request, response);
             return;
         }
-        jwt = authHeader.substring(7);
-        userEmail = jwtService.extractUsername(jwt);
-        if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){ 
-            List<GrantedAuthority> authorities = jwtService.extractAuthorities(jwt);
+        final String jwt = authHeader.substring(7);
+        Integer userId = jwtService.extractUserId(jwt);
+        if(userId != null && SecurityContextHolder.getContext().getAuthentication() == null){ 
             if(!jwtService.isTokenExpired(jwt)){
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userEmail, null, authorities);
+                List<GrantedAuthority> authorities = jwtService.extractAuthorities(jwt);
+                
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userId, null, authorities);
 
                 authToken.setDetails( 
                         new WebAuthenticationDetailsSource().buildDetails(request)
