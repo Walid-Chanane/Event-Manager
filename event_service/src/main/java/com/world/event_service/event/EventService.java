@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,6 +14,9 @@ import com.world.event_service.event.DTOs.EventRequest;
 import com.world.event_service.event.DTOs.EventResponse;
 import com.world.event_service.event_file.EventFile;
 import com.world.event_service.event_file.FileStorageService;
+import com.world.event_service.notification.NotificationRequest;
+import com.world.event_service.notification.NotificationService;
+import com.world.event_service.notification.NotificationType;
 import com.world.event_service.pagination.PageResponse;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -25,6 +29,7 @@ public class EventService {
     private final EventRepository eventRepository;
     private final EventMapper eventMapper;
     private final FileStorageService fileStorageService;
+    private final NotificationService notificationService;
 
     public EventResponse save(EventRequest request) {
         Event event = eventMapper.toEvent(request);
@@ -48,7 +53,7 @@ public class EventService {
                     .contentType(contentType)
                     .build();
             
-            event.add(savedFile);
+            event.addFile(savedFile);
         }
         
         event = eventRepository.save(event);
@@ -74,6 +79,39 @@ public class EventService {
         event.setStatus(EventStatus.CANCELLED);
         event = eventRepository.save(event);
         return eventMapper.toEventResponse(event);
+    }
+
+    public void register(Integer eventId, Authentication authenticatedUser, String authHeader) {
+        Integer userId = (Integer) authenticatedUser.getPrincipal();
+        Event event = eventRepository.findById(eventId)
+                    .orElseThrow(() -> new EntityNotFoundException("Event " + eventId + " not found"));
+
+        event.addParticipant(userId);
+        eventRepository.save(event);
+
+        NotificationRequest request = NotificationRequest.builder()
+            .eventTitle(event.getTitle())
+            .type(NotificationType.EVENT_REGISTRATION)
+            .userIDs(List.of(userId))
+            .build();
+        notificationService.sendNotification(request, authHeader);
+    }
+        
+    public void withdraw(Integer eventId, Authentication authenticatedUser, String authHeader) {
+        Integer userId = (Integer) authenticatedUser.getPrincipal();
+        Event event = eventRepository.findById(eventId)
+            .orElseThrow(() -> new EntityNotFoundException("Event " + eventId + " not found"));
+            
+        event.removeParticipant(userId);
+        eventRepository.save(event);
+            
+            
+        NotificationRequest request = NotificationRequest.builder()
+            .eventTitle(event.getTitle())
+            .type(NotificationType.EVENT_REGISTRATION)
+            .userIDs(List.of(userId))
+            .build();
+        notificationService.sendNotification(request, authHeader);
     }
 
 }

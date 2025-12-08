@@ -17,6 +17,9 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
+server:
+  port: 8082
+
 application:
   security:
     jwt:

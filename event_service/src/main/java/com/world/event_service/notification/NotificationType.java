@@ -1,4 +1,4 @@
-package com.world.notification_service;
+package com.world.event_service.notification;
 
 public enum NotificationType {
     EVENT_REGISTRATION,

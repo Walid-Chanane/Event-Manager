@@ -49,7 +49,7 @@ public class Event {
     private List<Integer> participantIDs;
 
 
-    public void add(EventFile eventFile){
+    public void addFile(EventFile eventFile){
 
         if(files == null)
         files = new ArrayList<>();
@@ -57,5 +57,19 @@ public class Event {
         files.add(eventFile);
 
         eventFile.setEvent(this);
+    }
+    
+    public void addParticipant(Integer participantId){
+        if(participantIDs == null)
+        participantIDs = new ArrayList<>();
+
+        participantIDs.add(participantId);
+    }
+
+    public void removeParticipant(Integer participantId){
+        if(participantIDs == null)
+        return;
+        
+        participantIDs.remove(participantId);
     }
 }
