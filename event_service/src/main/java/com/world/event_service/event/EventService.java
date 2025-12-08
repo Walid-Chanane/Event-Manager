@@ -28,6 +28,7 @@ public class EventService {
 
     public EventResponse save(EventRequest request) {
         Event event = eventMapper.toEvent(request);
+        event.setStatus(EventStatus.ACTIVE);
         event = eventRepository.save(event);
         return eventMapper.toEventResponse(event);
     }
@@ -55,7 +56,7 @@ public class EventService {
     }
 
     public PageResponse<EventResponse> getUpcomingEvents(Pageable pageable) {
-        Page<EventResponse> events = eventRepository.findByTimeAfter(LocalDateTime.now(), pageable).map(eventMapper::toEventResponse);
+        Page<EventResponse> events = eventRepository.findByStatusAndTimeAfter(EventStatus.ACTIVE, LocalDateTime.now(), pageable).map(eventMapper::toEventResponse);
         return new PageResponse<>(
             events.getContent(),
             events.getNumber(),
@@ -65,6 +66,14 @@ public class EventService {
             events.isFirst(),
             events.isLast()
         );
+    }
+
+    public EventResponse cancelEvent(Integer eventId) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new EntityNotFoundException("Event " + eventId + " not found"));
+        event.setStatus(EventStatus.CANCELLED);
+        event = eventRepository.save(event);
+        return eventMapper.toEventResponse(event);
     }
 
 }

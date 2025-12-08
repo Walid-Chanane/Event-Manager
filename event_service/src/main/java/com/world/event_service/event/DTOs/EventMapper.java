@@ -37,6 +37,7 @@ public class EventMapper {
             .description(event.getDescription())
             .time(event.getTime())
             .location(event.getLocation())
+            .status(event.getStatus())
             .files(eventFiles)
             .build();
     }
