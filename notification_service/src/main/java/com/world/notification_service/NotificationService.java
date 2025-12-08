@@ -36,10 +36,18 @@ public class NotificationService {
                 .id(notification.getId())
                 .title(notification.getTitle())
                 .message(notification.getMessage())
+                .isRead(notification.isRead())
                 .type(notification.getType())
                 .createdDate(notification.getCreatedDate())
                 .build()
             ).toList();
+    }
+
+    public void updateReadStatus(Integer notificationId, Authentication authenticatedUser) {
+        Integer userId = (Integer) authenticatedUser.getPrincipal();
+        Notification notification = notificationRepository.findByIdAndUserId(notificationId, userId);
+        notification.setRead(true);
+        notificationRepository.save(notification);
     }
     
 }
