@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,5 +30,11 @@ public class NotificationController {
     @GetMapping("get")
     public ResponseEntity<List<NotificationResponse>> getNotifications(Authentication authenticatedUser){
         return ResponseEntity.ok(notificationService.getUserNotifications(authenticatedUser));
+    }
+
+    @PatchMapping("/read/{notificationId}")
+    public ResponseEntity<?> updateReadStatus(@PathVariable Integer notificationId, Authentication authenticatedUser){
+        notificationService.updateReadStatus(notificationId, authenticatedUser);
+        return ResponseEntity.ok().build();
     }
 }
