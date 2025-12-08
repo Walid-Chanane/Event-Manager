@@ -8,5 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EventRepository extends JpaRepository<Event, Integer>{
     
-        Page<Event> findByTimeAfter(LocalDateTime now, Pageable pageable);
+    Page<Event> findByStatusAndTimeAfter(EventStatus status, LocalDateTime now, Pageable pageable);
+
 }

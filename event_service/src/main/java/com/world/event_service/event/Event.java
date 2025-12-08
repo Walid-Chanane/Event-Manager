@@ -11,6 +11,8 @@ import com.world.event_service.event_file.EventFile;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -37,6 +39,9 @@ public class Event {
     private String description;
     private LocalDateTime time;
     private String location;
+    
+    @Enumerated(EnumType.STRING)
+    private EventStatus status;
     
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<EventFile> files;
