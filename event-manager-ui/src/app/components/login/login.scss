@@ -1,0 +1,42 @@
+h1{
+    text-align: center;
+}
+.containerr{
+    width: 35%;
+    height: 370px;
+    margin: 100px auto;
+    border-radius: 15px;
+    border-style: solid;
+}
+.form-container{
+    padding: 20px 40px;
+}
+#password, #email{
+    margin: 0 4%;
+    width: 90%;
+    height: 30px;
+    border-radius: 7px;
+    border-style: solid;
+    border-width: 1px;
+    font-size: large;
+}
+label{
+    font-size: large;
+    margin: 0 7%;
+}
+.login{
+    font-size: 20px;
+    width: 50%;
+    height: 35px;
+    border-radius: 3px;
+    background-color: black;
+    color:white;
+    margin: 5px 25%;
+    font-weight: 600;
+    border-style: none;
+    cursor: pointer;
+}
+.failed{
+    font-size: 20px;
+    color: red;
+}

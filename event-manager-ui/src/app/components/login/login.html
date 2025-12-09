@@ -1,0 +1,21 @@
+<div class="containerr">
+<h1>Login Form</h1>
+
+    <label for="email">Username</label><br>
+    <input [(ngModel)]="authRequest.email" type="text" id="email" name="email">
+
+    <br><br>
+
+    <label for="password">Password</label><br>
+    <input [(ngModel)]="authRequest.password" type="password" id="password" name="password">
+    
+    <br><br>
+    
+    <button type="button" class="login" (click)="login()">Login</button>
+    
+    <div class="failed" role="alert" *ngIf="errors.length">
+        <p *ngFor="let msg of errors">{{msg}}</p>
+    </div>
+
+    <p style="text-align: center;">Don't have an account ? <a href="/register">register</a> </p>
+</div>

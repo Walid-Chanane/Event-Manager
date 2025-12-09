@@ -1,0 +1,37 @@
+<div class="containerr">
+    <h1>Registration Form</h1>
+
+    <label for="firstName">Firstname:</label>
+    <input [(ngModel)]="registrationRequest.firstName" type="text" id="firstName" name="firstName" class="field" />
+
+        <br><br>
+        
+    <label for="lastName">Lastname:</label>
+    <input [(ngModel)]="registrationRequest.lastName" type="text" id="lastName" name="lastName" class="field" />
+
+        <br><br>
+
+    <label for="username">Date of birth:</label>
+    <input [(ngModel)]="registrationRequest.dateOfBirth" type="date" id="dateOfBirth" name="dateOfBirth" class="field" />
+    
+        <br> <br>
+    
+        <label for="email">Email:</label>
+    <input [(ngModel)]="registrationRequest.email" type="text" id="email" name="email" class="field" />
+    
+        <br> <br>
+    
+    <label for="password">Password:</label>
+    <input [(ngModel)]="registrationRequest.password" type="password" id="password" name="password" class="field" />
+    
+        <br><br><br>
+    <button type="button" class="register" (click)="register()">Register</button>
+
+    
+    <div class="failed" role="alert" *ngIf="errors.length">
+        <p *ngFor="let msg of errors">{{msg}}</p>
+    </div>
+
+    <p style="text-align: center;">Already have an account ? <a href="/login">login</a> </p>
+</div>
+
