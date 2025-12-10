@@ -1,6 +1,5 @@
 package com.world.event_service.event;
 
-import java.net.URI;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
@@ -24,17 +23,15 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("admin/event")
+@RequestMapping("admin")
 @RequiredArgsConstructor
 public class AdminEventController {
     
     private final EventService eventService;
 
     @PostMapping("/save")
-    public ResponseEntity<EventResponse> save(@RequestBody @Valid EventRequest request){
-        EventResponse event = eventService.save(request);
-        URI uri = URI.create("/admin/event/" + event.id());
-        return ResponseEntity.created(uri).body(event);
+    public ResponseEntity<Integer> save(@RequestBody @Valid EventRequest request){
+        return ResponseEntity.ok(eventService.save(request));
     }
     
     @PostMapping(value = "/upload/{eventId}", consumes = "multipart/form-data")

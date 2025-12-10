@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.world.event_service.event.DTOs.AdminEventResponse;
 import com.world.event_service.event.DTOs.EventMapper;
@@ -32,11 +33,10 @@ public class EventService {
     private final FileStorageService fileStorageService;
     private final NotificationService notificationService;
 
-    public EventResponse save(EventRequest request) {
+    public Integer save(EventRequest request) {
         Event event = eventMapper.toEvent(request);
         event.setStatus(EventStatus.ACTIVE);
-        event = eventRepository.save(event);
-        return eventMapper.toEventResponse(event);
+        return eventRepository.save(event).getId();
     }
 
     public EventResponse uploadFiles(Integer eventId, List<MultipartFile> files) {
@@ -47,10 +47,11 @@ public class EventService {
             String filePath = fileStorageService.saveFile(file, event.getId());
             
             String contentType = filePath.contains("images") ? "image" : (filePath.contains("documents") ? "document" : (filePath.contains("videos") ? "video" : "other"));
-            
+            String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+
             EventFile savedFile = EventFile.builder()
                     .fileName(file.getOriginalFilename())
-                    .filePath(filePath)
+                    .filePath(baseUrl + filePath.substring(1))
                     .contentType(contentType)
                     .build();
             
