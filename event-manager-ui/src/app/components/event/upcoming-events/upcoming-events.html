@@ -1,0 +1,56 @@
+<div class="d-flex flex-column align-items-center overflow-auto" style="max-height: 100vh;">
+<ng-container *ngFor="let item of eventResponse.content">
+  <app-event-element [eventItem]="item"></app-event-element>
+</ng-container>
+</div>
+
+
+<div class="d-flex justify-content-center mt-3">
+    <nav aria-label="page navigation">
+        <ul class="pagination">
+            <li class="page-item">
+                <a (click)="goToFirstPage()"
+                class="page-link"
+                href="javascript:void(0)"
+                aria-label="previous"
+                 [class.disabled]="page == 0"> 
+                <i class="fas fa-angles-left"></i>
+                </a>
+
+                <a (click)="goToPreviousPage()"
+                href="javascript:void(0)"
+                class="page-link"
+                aria-label="next"
+                [class.disabled]="page == 0">
+                <i class="fas fa-angle-left"></i>
+                </a>
+            </li>
+            <li class="page-item" *ngFor="let _ of [].constructor(this.eventResponse.totalPages); let pageIndex = index">
+                <a (click)="goToPage(pageIndex)"
+                href="javascript:void(0)"
+                class="page-link"
+                aria-label="page"
+                [class.active]="page == pageIndex">
+                {{pageIndex + 1}}
+                </a>
+            </li>
+            <li class="page-item">
+                <a (click)="goToNextPage()"
+                class="page-link"
+                href="javascript:void(0)"
+                aria-label="next"
+                [class.disabled]="isLastPage">
+                <i class="fas fa-chevron-right"></i>
+                </a>
+
+                <a (click)="goToLastPage()"
+                href="javascript:void(0)"
+                class="page-link"
+                aria-label="last"
+                [class.disabled]="isLastPage">
+                <i class="fas fa-angle-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
