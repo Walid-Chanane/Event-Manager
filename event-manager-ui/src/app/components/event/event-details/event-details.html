@@ -105,9 +105,8 @@
         </div>
       
       </div>
-      <!-- <button type="button" class="btn btn-outline-primary w-100" (click)="getParticipants()">Participants</button> -->
   </div>
-  <!-- Participants section -->
+
 <div class="card border-0">
   <div class="card-header d-flex align-items-center">
       <button
@@ -129,7 +128,6 @@
       No participants.
     </div>
 
-    <!-- Table -->
     <div *ngIf="participants.length > 0" class="table-responsive">
       <table class="table table-hover table-sm mb-0">
         <thead class="table-light">
@@ -137,6 +135,7 @@
             <th>Name</th>
             <th>Email</th>
             <th class="text-end">Date of birth</th>
+            <th class="text-end">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -149,6 +148,9 @@
             </td>
             <td class="text-end">
               {{ p.dateOfBirth | date:'yyyy-MM-dd' }}
+            </td>
+            <td class="text-end">
+              <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeFromEvent(p.id)">Kick</button>
             </td>
           </tr>
         </tbody>

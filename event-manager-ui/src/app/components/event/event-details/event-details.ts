@@ -83,6 +83,23 @@ export class EventDetails implements OnInit{
       })
     }
   }
+  
+  removeFromEvent(participantId: number){
+    this.eventService.removeFromEvent(this.eventItem.id, participantId)
+    .subscribe({
+      next: (response) => {
+        alert('You have successfully removed the participant from the event.')
+        this.findEvent()
+        this.getParticipants   
+        this.participants = this.participants.filter(p => p.id !== participantId);
+      },
+      error: (err) => {
+        alert("An error has occured, try remove again.")
+      }
+    })
+    
+  }
+  
 
   save(){
     this.eventService.updateEvent(

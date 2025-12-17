@@ -45,27 +45,28 @@ public class EventController {
         return ResponseEntity.ok().build();
     }
 
-@GetMapping("/uploads/event_{eventId}/{type}/{filename}")
-public ResponseEntity<Resource> getFile(
+    @GetMapping("/uploads/event_{eventId}/{type}/{filename}")
+    public ResponseEntity<Resource> getFile(
         @PathVariable String eventId,
         @PathVariable String filename,
         @PathVariable String type) throws IOException {
-            String p = "/home/warch/projects/eventManager/uploads/event_"+ eventId + "/"+ type +"/" + filename;
-    Path path = Paths.get(p);
+            
+        String p = "/home/warch/projects/eventManager/uploads/event_"+ eventId + "/"+ type +"/" + filename;
+        Path path = Paths.get(p);
 
-    if (!Files.exists(path)) {
-        return ResponseEntity.notFound().build();
+        if (!Files.exists(path)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Resource resource = new UrlResource(path.toUri());
+
+        String mimeType = Files.probeContentType(path);
+        if (mimeType == null) {
+            mimeType = "application/octet-stream";
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(mimeType))
+                .body(resource);
     }
-
-    Resource resource = new UrlResource(path.toUri());
-
-    String mimeType = Files.probeContentType(path);
-    if (mimeType == null) {
-        mimeType = "application/octet-stream";
-    }
-
-    return ResponseEntity.ok()
-            .contentType(MediaType.parseMediaType(mimeType))
-            .body(resource);
-}
 }

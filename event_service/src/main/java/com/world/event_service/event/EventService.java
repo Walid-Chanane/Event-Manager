@@ -141,4 +141,20 @@ public class EventService {
             .orElseThrow(() -> new EntityNotFoundException("Event " + eventId + " not found"));
     }
 
+    public void removeFromEvent(Integer eventId, Integer participantId, String authHeader) {
+        Event event = eventRepository.findById(eventId)
+            .orElseThrow(() -> new EntityNotFoundException("Event " + eventId + " not found"));
+            
+        event.removeParticipant(participantId);
+        eventRepository.save(event);
+            
+            
+        NotificationRequest request = NotificationRequest.builder()
+            .eventTitle(event.getTitle())
+            .type(NotificationType.EVENT_WITHDRAWAL)
+            .userIDs(List.of(participantId))
+            .build();
+        notificationService.sendNotification(request, authHeader);
+    }
+
 }
