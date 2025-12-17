@@ -19,13 +19,12 @@ export class EventList implements OnInit{
   page = 0
   size = 10
   direction = 'ASC'
-  sortBy = 'title'
+  sortBy = 'id'
   message: string = ''
   success: boolean = true
 
   constructor(
     private eventService: EventService,
-    private router: Router,
     private cdr: ChangeDetectorRef
   ){}
 
@@ -46,6 +45,10 @@ export class EventList implements OnInit{
       },
       error: (err) => console.error('Error fetching events', err),
     });
+  }
+
+  onFilterChange(){
+    this.findAllEvents() 
   }
   
   goToFirstPage(){

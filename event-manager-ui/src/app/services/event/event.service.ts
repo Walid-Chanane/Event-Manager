@@ -15,10 +15,9 @@ export class EventService {
     return this.http.get<PageUpcomingEvents>(EVENT_SERVICE_URL + '/admin/get-events',
       {
       params: {
-        page: page.page?.toString(),
-        size: page.size?.toString(),
-        direction: page.direction?.toString(),
-        sortBy: page.sortBy?.toString()
+        page: page.page,
+        size: page.size,
+        sort: `${page.sortBy},${page.direction}`
       }
     }  
     );
@@ -49,8 +48,7 @@ export class EventService {
       params: {
         page: page.page?.toString(),
         size: page.size?.toString(),
-        direction: page.direction?.toString(),
-        sortBy: page.sortBy?.toString()
+        sort: `${page.sortBy},${page.direction}`
       }
     }  
     );

@@ -13,7 +13,7 @@ export class AdminGuard {
 
   canActivate(): boolean {
     var authorities : Array<string> =  this.tokenService.extractAuthorities()
-    if (this.tokenService.isTokenNotValid() || authorities.includes('ROLE_EMPLOYEE') || authorities.includes('ROLE_ADMIN')) {
+    if (this.tokenService.isTokenNotValid() || (!authorities.includes('ROLE_EMPLOYEE') && !authorities.includes('ROLE_ADMIN'))) {
       this.router.navigate(['login']);
       return false;
     }
