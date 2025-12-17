@@ -49,6 +49,10 @@ export class UpcomingEvents {
     return authorities.includes('ROLE_EMPLOYEE') || authorities.includes('ROLE_ADMIN')
   }
 
+  onFilterChange(){
+    this.findUpcomingEvents() 
+  }
+
   goToFirstPage(){
     this.page = 0
     this.findUpcomingEvents()

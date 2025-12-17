@@ -22,6 +22,21 @@
   </div>
 </nav>
 
+<div class="container d-flex justify-content-center align-items-center mb-3">
+  <div class="me-2 fw-bold">Sort By:</div>
+  <select class="form-select w-auto me-3" [(ngModel)]="sortBy" (change)="onFilterChange()">
+    <option value="id">Default</option>
+    <option value="title">Title</option>
+    <option value="time">Date & time</option>
+  </select>
+
+  <div class="me-2 fw-bold">Order:</div>
+  <select class="form-select w-auto" [(ngModel)]="direction" (change)="onFilterChange()">
+    <option value="ASC">Ascending</option>
+    <option value="DESC">Descending</option>
+  </select>
+</div>
+
 <div class="d-flex flex-column align-items-center overflow-auto" style="max-height: 100vh;">
 <ng-container *ngFor="let item of eventResponse.content">
   <app-event-element [eventItem]="item"></app-event-element>
