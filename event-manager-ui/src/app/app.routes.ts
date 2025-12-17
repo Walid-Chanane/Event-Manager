@@ -6,6 +6,8 @@ import { UpcomingEvents } from './components/event/upcoming-events/upcoming-even
 import { EventDetails } from './components/event/event-details/event-details';
 import { Guard } from './services/guard/guard';
 import { EventList } from './components/event/event-list/event-list';
+import { Notification } from './components/notification/notification';
+import { AdminGuard } from './services/admin-guard/admin-guard';
 
 export const routes: Routes = [
   {
@@ -19,7 +21,7 @@ export const routes: Routes = [
   {
     path: 'addEvent',
     component: SaveEventComponent,
-    canActivate: [Guard]
+    canActivate: [AdminGuard]
   },
   {
     path: 'events/upcoming',
@@ -29,11 +31,16 @@ export const routes: Routes = [
   {
     path: 'admin/events',
     component: EventList,
-    canActivate: [Guard]
+    canActivate: [AdminGuard]
   },
   {
     path: 'event-details',
     component: EventDetails,
+    canActivate: [AdminGuard]
+  },
+  {
+    path: 'notifications',
+    component: Notification,
     canActivate: [Guard]
   }
 ];

@@ -1,1 +1,49 @@
-<p>notification works!</p>
+<div class="d-flex justify-content-center">
+  <h1 style="font-family: 'Lobster', sans-serif; font-size: 7rem;">Notifications</h1>
+</div>
+<nav>
+  <div class="container d-flex justify-content-center pb-2">
+
+    <a *ngIf="isAdmin()" href="/admin/events" class="btn btn-link text-decoration-none" style="font-family: 'Lobster', sans-serif; font-size: 1.5rem">
+        Manage Events
+    </a>
+    
+    <a href="events/upcoming" class="btn btn-link text-decoration-none" style="font-family: 'Lobster', sans-serif; font-size: 1.5rem">
+      Upcoming Events
+    </a>
+        
+    <a *ngIf="isAdmin()" href="/addEvent" class="btn btn-link text-decoration-none" style="font-family: 'Lobster', sans-serif; font-size: 1.5rem">
+      Add Event
+    </a>
+
+    <a href="/login" (click)="logout()"  class="btn btn-link text-decoration-none" style="font-family: 'Lobster', sans-serif; font-size: 1.5rem">
+      Logout
+    </a>
+  </div>
+</nav>
+<div class="container mt-4">
+<div class="table-responsive">
+  <table class="table table-hover align-middle">
+    <thead class="table-light">
+      <tr>
+        <th scope="col">Title</th>
+        <th scope="col">Message</th>
+        <th scope="col">Sent at</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let notif of notifications"
+        [ngClass]="{
+          'table-success': notif.isRead,
+          'table-secondary': notif.isRead
+        }"
+      >
+        <td class="fw-semibold">{{ notif.title }}</td>
+        <td class="fw-semibold">{{ notif.message }}</td>
+        <td class="fw-semibold">{{ notif.createdDate }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
