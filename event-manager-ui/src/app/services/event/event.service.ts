@@ -65,5 +65,9 @@ export class EventService {
   cancel(eventId: number): Observable<EventResponse>{
     return this.http.patch<EventResponse>(EVENT_SERVICE_URL + '/admin/cancel/' + eventId, {})
   }
+  
+  removeFromEvent(eventId: number, participantId: number): Observable<{}>{
+    return this.http.patch<{}>(EVENT_SERVICE_URL + '/admin/remove/' + eventId + '/' + participantId, {})
+  }
 
 }
