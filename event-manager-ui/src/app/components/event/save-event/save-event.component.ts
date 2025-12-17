@@ -4,6 +4,7 @@ import { EventService } from '../../../services/event/event.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { EventResponse } from '../../../models/event-response';
 
 @Component({
   selector: 'app-event.component',
@@ -23,16 +24,16 @@ export class SaveEventComponent {
   ){}
 
   saveEvent(){
-    this.eventService.saveEvent(
+    this.eventService.addEvent(
       this.event
     ).subscribe({
-        next: (eventId) => {
+        next: (response) => {
           const formData = new FormData();
           this.files.forEach(file => {
             formData.append('files', file, file.name);
           });
           this.eventService.uploadfiles(
-            eventId,
+            response,
             formData
           ).subscribe({
             next: () => {
@@ -64,5 +65,8 @@ export class SaveEventComponent {
     this.files = [];
   }
   
+  logout(){
+    localStorage.removeItem('token')
+  }
 }
 

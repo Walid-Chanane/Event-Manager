@@ -34,7 +34,8 @@ export class Login {
         var authorities : Array<string> =  this.tokenService.extractAuthorities()
         if (authorities.includes('ROLE_ADMIN') || authorities.includes('ROLE_EMPLOYEE'))
         {this.router.navigate(['admin/events'])}
-        else this.router.navigate(['events'])
+        else
+         this.router.navigate(['/events/upcoming'])
       },
       error: (err) => {
         if(err.error.validationErrors){

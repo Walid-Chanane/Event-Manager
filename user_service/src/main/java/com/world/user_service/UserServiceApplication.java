@@ -37,6 +37,11 @@ public class UserServiceApplication {
 				.email("admin@gmail.com").password(passwordEncoder.encode("password")).enabled(true)
 				.dateOfBirth(LocalDate.now()).build();
 			userRepository.save(admin);
+			
+			User user = User.builder().firstName("user").lastName("user").roles(List.of(role))
+				.email("user@gmail.com").password(passwordEncoder.encode("password")).enabled(true)
+				.dateOfBirth(LocalDate.now()).build();
+			userRepository.save(user);
 		};
 	}
 
