@@ -1,34 +1,64 @@
+<div class="d-flex justify-content-center">
+  <h1 style="font-family: 'Lobster', sans-serif; font-size: 7rem;">Manage Events</h1>
+</div>
+<nav>
+  <div class="container d-flex justify-content-center pb-2">
 
-    <div class="form-group">
-        <label for="title">Title:</label>
-        <input type="text" class="form-control" id="title" [(ngModel)]="event.title">
-    </div>
-    <div class="form-group">
-        <label for="description">Description:</label>
-        <textarea class="form-control" id="description" [(ngModel)]="event.description"></textarea>
-    </div>
-    <div class="form-group">
-        <label for="time">Time:</label>
-        <input type="datetime-local" class="form-control" id="time" [(ngModel)]="event.time">
-    </div>
-    <div class="form-group">
-        <label for="location">Location:</label>
-        <input type="text" class="form-control" id="location" [(ngModel)]="event.location">
-    </div>
-    <div class="form-group">
-    <input type="file" (change)="onFileSelected($event)" multiple/>
-    <ul>
-    <li *ngFor="let file of files; let i = index">
-        {{ file.name }}
-        <button (click)="deleteFile(i)">Delete</button>
-    </li>
-    </ul>
+    <a href="admin/events" class="btn btn-link text-decoration-none" style="font-family: 'Lobster', sans-serif; font-size: 1.5rem">
+    Manage Events
+    </a>
 
-    <button (click)="resetFiles()">Reset All</button>
-    <button (click)="saveEvent()" type="button" class="btn btn-primary">Submit</button>
+    <a href="events/upcoming" class="btn btn-link text-decoration-none" style="font-family: 'Lobster', sans-serif; font-size: 1.5rem">
+      Upcoming Events
+    </a>
+
+    <a href="notifications" class="btn btn-link text-decoration-none" style="font-family: 'Lobster', sans-serif; font-size: 1.5rem">
+      Notifications
+    </a>
+    
+    <a href="/login" (click)="logout()"  class="btn btn-link text-decoration-none" style="font-family: 'Lobster', sans-serif; font-size: 1.5rem">
+      Logout
+    </a>
+  </div>
+</nav>
+<div class="container mt-4">
+  <div class="p-4 border rounded shadow-sm bg-light">
+
+    <div class="mb-3">
+      <label for="title" class="form-label fw-bold">Title</label>
+      <input type="text" id="title" class="form-control" [(ngModel)]="event.title" placeholder="Enter event title">
     </div>
-<style>
-    .form-group {
-        margin-bottom: 10px;
-    }
-</style>
+
+    <div class="mb-3">
+      <label for="description" class="form-label fw-bold">Description</label>
+      <textarea id="description" class="form-control" rows="3" [(ngModel)]="event.description" placeholder="Enter event description"></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label for="time" class="form-label fw-bold">Time</label>
+      <input type="datetime-local" id="time" class="form-control" [(ngModel)]="event.time">
+    </div>
+
+    <div class="mb-3">
+      <label for="location" class="form-label fw-bold">Location</label>
+      <input type="text" id="location" class="form-control" [(ngModel)]="event.location" placeholder="Enter event location">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label fw-bold">Files</label>
+      <input type="file" class="form-control" (change)="onFileSelected($event)" multiple>
+
+      <ul class="list-group mt-2">
+        <li *ngFor="let file of files; let i = index" class="list-group-item d-flex justify-content-between align-items-center">
+          {{ file.name }}
+          <button type="button" class="btn btn-sm btn-outline-danger" (click)="deleteFile(i)">Delete</button>
+        </li>
+      </ul>
+
+      <div class="mt-2 d-flex justify-content-between">
+        <button type="button" class="btn btn-outline-warning btn-sm" (click)="resetFiles()">Reset Files</button>
+        <button type="button" class="btn btn-primary" (click)="saveEvent()">Add Event</button>
+      </div>
+    </div>
+  </div>
+</div>

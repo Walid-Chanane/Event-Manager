@@ -14,6 +14,7 @@ import com.world.event_service.event.DTOs.AdminEventResponse;
 import com.world.event_service.event.DTOs.EventMapper;
 import com.world.event_service.event.DTOs.EventRequest;
 import com.world.event_service.event.DTOs.EventResponse;
+import com.world.event_service.event.DTOs.UpdateEventRequest;
 import com.world.event_service.event_file.EventFile;
 import com.world.event_service.event_file.FileStorageService;
 import com.world.event_service.notification.NotificationRequest;
@@ -33,10 +34,16 @@ public class EventService {
     private final FileStorageService fileStorageService;
     private final NotificationService notificationService;
 
-    public Integer save(EventRequest request) {
+    public Integer add(EventRequest request) {
         Event event = eventMapper.toEvent(request);
         event.setStatus(EventStatus.ACTIVE);
         return eventRepository.save(event).getId();
+    }
+
+    public Integer update(UpdateEventRequest request) {
+        Event event = eventMapper.updateRequestToEvent(request);
+        return eventRepository.save(event).getId();
+        
     }
 
     public EventResponse uploadFiles(Integer eventId, List<MultipartFile> files) {
@@ -110,7 +117,7 @@ public class EventService {
             
         NotificationRequest request = NotificationRequest.builder()
             .eventTitle(event.getTitle())
-            .type(NotificationType.EVENT_REGISTRATION)
+            .type(NotificationType.EVENT_WITHDRAWAL)
             .userIDs(List.of(userId))
             .build();
         notificationService.sendNotification(request, authHeader);
@@ -127,6 +134,11 @@ public class EventService {
             events.isFirst(),
             events.isLast()
         );
+    }
+
+    public AdminEventResponse getEventById(Integer eventId) {
+        return eventRepository.findById(eventId).map(eventMapper::toAdminEventResponse)
+            .orElseThrow(() -> new EntityNotFoundException("Event " + eventId + " not found"));
     }
 
 }

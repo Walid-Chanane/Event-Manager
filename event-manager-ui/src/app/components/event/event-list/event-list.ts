@@ -1,19 +1,19 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
-import { PageUpcomingEvents } from '../../../models/page-upcoming-events';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { EventService } from '../../../services/event/event.service';
 import { Router } from '@angular/router';
+import { PageUpcomingEvents } from '../../../models/page-upcoming-events';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { EventElement } from '../event-element/event-element';
-import { TokenService } from '../../../services/token/token.service';
 
 @Component({
-  selector: 'app-upcoming-events',
+  selector: 'app-event-list',
   imports: [FormsModule, CommonModule, EventElement],
-  templateUrl: './upcoming-events.html',
-  styleUrl: './upcoming-events.scss',
+  templateUrl: './event-list.html',
+  styleUrl: './event-list.scss',
 })
-export class UpcomingEvents {
+export class EventList implements OnInit{
+
   eventResponse: PageUpcomingEvents = {content : [], totalPages:1};
 
   page = 0
@@ -23,14 +23,18 @@ export class UpcomingEvents {
   message: string = ''
   success: boolean = true
 
-  constructor(private eventService: EventService,private tokenService: TokenService, private router: Router, private cdr: ChangeDetectorRef){}
-  
+  constructor(
+    private eventService: EventService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ){}
+
   ngOnInit(): void {
-    this.findUpcomingEvents()
+    this.findAllEvents()
   }
 
-  private findUpcomingEvents(){
-    this.eventService.findUpcomingEvents({
+  private findAllEvents(){
+    this.eventService.findAllEvents({
       page: this.page,
       size: this.size,
       direction: this.direction,
@@ -43,43 +47,37 @@ export class UpcomingEvents {
       error: (err) => console.error('Error fetching events', err),
     });
   }
-
-  isAdmin(): boolean {
-    var authorities : Array<string> =  this.tokenService.extractAuthorities()
-    return authorities.includes('ROLE_EMPLOYEE') || authorities.includes('ROLE_ADMIN')
-  }
-
+  
   goToFirstPage(){
     this.page = 0
-    this.findUpcomingEvents()
+    this.findAllEvents()
   }
 
   goToPreviousPage(){
     this.page--
-    this.findUpcomingEvents()
+    this.findAllEvents()
   }
 
   goToPage(index: number){
     this.page = index
-    this.findUpcomingEvents()
+    this.findAllEvents()
   }
 
   goToNextPage(){
     this.page++
-    this.findUpcomingEvents()
+    this.findAllEvents()
   }
 
   goToLastPage(){
     this.page = this.eventResponse.totalPages as number -1
-    this.findUpcomingEvents()
+    this.findAllEvents()
   }
-
 
   get isLastPage(): boolean{
     return this.page == this.eventResponse.totalPages as number -1
   }
 
-  logout(){
+    logout(){
     localStorage.removeItem('token')
   }
 }

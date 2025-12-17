@@ -19,12 +19,26 @@ public class EventMapper {
 
     public Event toEvent(EventRequest request){
         return Event.builder()
-            .id(request.id())
             .title(request.title())
             .description(request.description())
             .time(request.time())
             .location(request.location())
             .build();
+    }
+
+    public Event updateRequestToEvent(UpdateEventRequest request){
+        Event event = Event.builder()
+            .id(request.id())
+            .title(request.title())
+            .description(request.description())
+            .time(request.time())
+            .location(request.location())
+            .status(request.status())
+            .participantIDs(request.participantIDs())
+            .build();
+
+        request.files().forEach(file -> file.setEvent(event));
+        return event;
     }
 
     public EventResponse toEventResponse(Event event){

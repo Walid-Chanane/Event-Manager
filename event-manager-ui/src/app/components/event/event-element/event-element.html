@@ -1,20 +1,20 @@
 <div class="card border-3" style="width: 60rem;"
-[class.border]="eventItem.status == 'ACTIVE'"
-[class.border-warning]="eventItem.status == 'CANCELLED'"
+[class.border-success]="eventItem.status == 'ACTIVE'"
+[class.border-warning]="eventItem.status != 'ACTIVE'"
 >
 
   <div class="card-body overflow-scroll">
     <h3 class="card-title text-nowrap fw-bold mb-1">
-      <i class="fas fa-book"></i> {{eventItem.title}}
+      <i class=""></i> {{eventItem.title}}
     </h3>
     <h5 class="card-subtitle text-secondary mb-1">
-      <i class="fas fa-user-check"></i> {{eventItem.description}}
+      <i class=""></i> {{eventItem.description}}
     </h5>
     <h6 class="card-subtitle fs-6 mb-1">
-      <i class="fas fa-code"></i> {{eventItem.time}}
+      <i class=""></i> {{eventItem.time}}
     </h6>
     <h6 class="card-subtitle fs-6">
-      <i class="fas fa-user"></i> {{eventItem.location}}
+      <i class=""></i> {{eventItem.location}}
     </h6>
 
     <div class="card-footer d-flex gap-2 justify-content-between align-items-center">
@@ -39,17 +39,11 @@
         </div>
       </div>
     </div>
+    <div class="">
+      <div class="d-inline" *ngIf="isAdmin()"><button (click)="goToDetails()" type="button" class="btn btn-primary">Details</button> | </div>
+      <button (click)="register()" type="button" class="btn btn-success">Register</button> | 
+      <button (click)="withdraw()" type="button" class="btn btn-danger">Withdraw</button>
+    </div>
   </div>
 </div>
- <!-- <div class="d-flex gap-2" *ngIf="!manage">
-  <i (click)="onShowDetails()" class="fas fa-circle-info text-primary"></i>
-  <i (click)="onBorrow()" class="fas fa-list-check text-primary"></i>
-  <i (click)="onAddToWaitingList()" class="fas fa-heart text-danger"></i>
-</div>
-
- <div class="d-flex gap-2" *ngIf="manage">
-  <i (click)="onEdit()" class="fas fa-edit text-success"></i>
-  <i (click)="onShare()" class="fas fa-share-nodes text-primary"></i>
-  <i (click)="onArchive()" class="fas fa-archive text-danger"></i>
-</div> -->
-
+<hr>
