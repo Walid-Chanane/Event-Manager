@@ -23,3 +23,9 @@ application:
       # secret-key: ${JWT_SECRET}
       secret-key: 0A0486EBF19DB7AA36FECD29D6F4D635674692E7E5BD757F8BE32346CC7FCE1E
       expiration: 86400000
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true

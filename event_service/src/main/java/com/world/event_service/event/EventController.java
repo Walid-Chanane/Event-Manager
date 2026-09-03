@@ -19,32 +19,39 @@ import org.springframework.web.bind.annotation.RestController;
 import com.world.event_service.event.DTOs.EventResponse;
 import com.world.event_service.pagination.PageResponse;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 // @RequestMapping("events")
 @RequiredArgsConstructor
+@Tag(name = "Event")
 public class EventController {
 
     private final EventService eventService;
     
+    @Operation(summary = "Get upcoming events")
     @GetMapping("/events/upcoming")
     public ResponseEntity<PageResponse<EventResponse>> getUpcomingEvents(Pageable pageable){
         return ResponseEntity.ok(eventService.getUpcomingEvents(pageable));
     }
     
+    @Operation(summary = "Register to an event")
     @PatchMapping("/{eventId}/register")
-    public ResponseEntity<?> register(@PathVariable Integer eventId, Authentication authenticatedUser, @RequestHeader("Authorization") String authHeader){
+    public ResponseEntity<Void> register(@PathVariable Integer eventId, Authentication authenticatedUser, @RequestHeader("Authorization") String authHeader){
         eventService.register(eventId, authenticatedUser, authHeader);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }    
     
+    @Operation(summary = "Withdraw from an event")
     @PatchMapping("/{eventId}/withdraw")
-    public ResponseEntity<?> withdraw(@PathVariable Integer eventId, Authentication authenticatedUser, @RequestHeader("Authorization") String authHeader){
+    public ResponseEntity<Void> withdraw(@PathVariable Integer eventId, Authentication authenticatedUser, @RequestHeader("Authorization") String authHeader){
         eventService.withdraw(eventId, authenticatedUser, authHeader);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Get file by event ID, file name and type")
     @GetMapping("/uploads/event_{eventId}/{type}/{filename}")
     public ResponseEntity<Resource> getFile(
         @PathVariable String eventId,

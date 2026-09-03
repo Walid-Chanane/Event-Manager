@@ -26,10 +26,14 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(configurer ->
                     configurer
-                        .requestMatchers("/uploads/**").permitAll()
+                        .requestMatchers("/uploads/**",
+                                            "/swagger-ui.html",
+                                            "/swagger-ui/**",
+                                            "/v3/api-docs/**"
+                                        ).permitAll()
                         .requestMatchers("/events/**").authenticated()
                         .requestMatchers("/admin/**").hasAnyRole("ADMIN", "EMPLOYEE")
-                                .anyRequest().authenticated()
+                        .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) 
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
